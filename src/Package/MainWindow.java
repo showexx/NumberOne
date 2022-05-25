@@ -1,5 +1,6 @@
+package Package;
+
 import javax.swing.*;
-import java.awt.*;
 
 public class MainWindow extends JFrame {
     private final int cellsSize = 16;
@@ -15,7 +16,6 @@ public class MainWindow extends JFrame {
         setLocation(400, 400);
         add(new Snake());
         setVisible(true);
-
     }
 
     public static void main(String[] args) {
