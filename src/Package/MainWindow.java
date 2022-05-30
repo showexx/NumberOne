@@ -23,4 +23,7 @@ public class MainWindow extends JFrame {
 
     }
 
+    public int getCellsSize() {
+        return cellsSize;
+    }
 }
