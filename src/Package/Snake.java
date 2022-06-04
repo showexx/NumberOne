@@ -11,13 +11,13 @@ import java.util.Random;
 public class Snake extends JPanel implements ActionListener {
     private Image snake;
     private int lengthSnake = 3;
-    private int[] xSnake = new int[25];
-    private int[] ySnake = new int[25];
+    private int[] xSnake = new int[400];
+    private int[] ySnake = new int[400];
     private int xApple;
     private int yApple;
     private boolean inGame = true;
-    private boolean moveLeft = true;
-    private boolean moveRight;
+    private boolean moveLeft ;
+    private boolean moveRight = true;
     private boolean moveUp;
     private boolean moveDown;
     private Random random = new Random();
@@ -35,12 +35,17 @@ public class Snake extends JPanel implements ActionListener {
 
     public void initializeGame() {
         for (int i = 0; i < lengthSnake; i++) {
-            xSnake[i] = 200 - i * 16;
-            ySnake[i] = 200;
+            xSnake[i] = 48 - i * 16;
+            ySnake[i] = 48;
         }
-        timer = new Timer(250,this);
+        timer = new Timer(100,this);
         timer.start();
         createApple();
+    }
+
+    public void createApple(){
+        xApple = random.nextInt(25) * 16;
+        yApple = random.nextInt(25) * 16;
     }
 
     public void loadImages() {
@@ -68,15 +73,17 @@ public class Snake extends JPanel implements ActionListener {
         }
     }
 
-    public void createApple(){
-        xApple = random.nextInt(25) * 16;
-        yApple = random.nextInt(25) * 16;
+    public void eatApple(){
+        if(xSnake[0] == xApple && ySnake[0] == yApple){
+            lengthSnake++;
+            createApple();
+        }
+
     }
 
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
-
         if (inGame) {
             for (int i = 0; i < lengthSnake; i++) {
                 g.drawImage(snake, xSnake[i], ySnake[i], this);
@@ -89,6 +96,7 @@ public class Snake extends JPanel implements ActionListener {
     public void actionPerformed(ActionEvent e) {
         if (inGame) {
             move();
+            eatApple();
         }
         repaint();
     }

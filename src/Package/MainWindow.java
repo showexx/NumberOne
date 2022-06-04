@@ -5,7 +5,7 @@ import javax.swing.*;
 public class MainWindow extends JFrame {
     private final int cellsSize = 16;
     private final int numberOfCells = 25;
-    private final int size = cellsSize * numberOfCells;
+    private final int size = 400;
 
 
     public MainWindow() {
@@ -23,7 +23,4 @@ public class MainWindow extends JFrame {
 
     }
 
-    public int getCellsSize() {
-        return cellsSize;
-    }
 }
