@@ -15,8 +15,9 @@ public class Snake extends JPanel implements ActionListener {
     private int[] ySnake = new int[400];
     private int xApple;
     private int yApple;
+    private int delayTime = 250;
     private boolean inGame = true;
-    private boolean moveLeft ;
+    private boolean moveLeft;
     private boolean moveRight = true;
     private boolean moveUp;
     private boolean moveDown;
@@ -31,6 +32,8 @@ public class Snake extends JPanel implements ActionListener {
         initializeGame();
         addKeyListener(new FieldKeyListener());
         setFocusable(true);
+        timer = new Timer(delayTime, this);
+        timer.start();
     }
 
     public void initializeGame() {
@@ -38,14 +41,19 @@ public class Snake extends JPanel implements ActionListener {
             xSnake[i] = 48 - i * 16;
             ySnake[i] = 48;
         }
-        timer = new Timer(100,this);
-        timer.start();
         createApple();
     }
 
-    public void createApple(){
+    public void createApple() {
         xApple = random.nextInt(25) * 16;
         yApple = random.nextInt(25) * 16;
+
+        for (int i = 0; i < lengthSnake; i++) {
+            if (xApple == xSnake[i] && yApple == ySnake[i]) {
+                xApple = random.nextInt(25) * 16;
+                yApple = random.nextInt(25) * 16;
+            }
+        }
     }
 
     public void loadImages() {
@@ -73,12 +81,23 @@ public class Snake extends JPanel implements ActionListener {
         }
     }
 
-    public void eatApple(){
-        if(xSnake[0] == xApple && ySnake[0] == yApple){
+    public void eatApple() {
+        if (xSnake[0] == xApple && ySnake[0] == yApple) {
             lengthSnake++;
             createApple();
         }
+    }
 
+
+    public void checkBorder() {
+        if (xSnake[0] > 400 || xSnake[0] < 0 || ySnake[0] > 400 || ySnake[0] < 0) {
+            inGame = false;
+        }
+        for (int i = 1; i < lengthSnake; i++) {
+            if (inGame && xSnake[0] == xSnake[i] && ySnake[0] == ySnake[i]) {
+                inGame = false;
+            }
+        }
     }
 
     @Override
@@ -97,6 +116,7 @@ public class Snake extends JPanel implements ActionListener {
         if (inGame) {
             move();
             eatApple();
+            checkBorder();
         }
         repaint();
     }
