@@ -21,9 +21,9 @@ public class Snake extends JPanel implements ActionListener {
     private boolean moveRight = true;
     private boolean moveUp;
     private boolean moveDown;
+    private boolean eatApple;
     private Random random = new Random();
     private Timer timer;
-
     Apple ap = new Apple();
 
     public Snake() {
@@ -32,7 +32,7 @@ public class Snake extends JPanel implements ActionListener {
         initializeGame();
         addKeyListener(new FieldKeyListener());
         setFocusable(true);
-        timer = new Timer(delayTime, this);
+        timer = new Timer(250, this);
         timer.start();
     }
 
@@ -44,14 +44,17 @@ public class Snake extends JPanel implements ActionListener {
         createApple();
     }
 
-    public void createApple() {
-        xApple = random.nextInt(25) * 16;
-        yApple = random.nextInt(25) * 16;
 
-        for (int i = 0; i < lengthSnake; i++) {
+    public void createApple() {
+        xApple = random.nextInt(20) * 16;
+        yApple = random.nextInt(20) * 16;
+
+    }
+
+    public void createAppleInSnake(){
+        for (int i = 1; i < lengthSnake; i++) {
             if (xApple == xSnake[i] && yApple == ySnake[i]) {
-                xApple = random.nextInt(25) * 16;
-                yApple = random.nextInt(25) * 16;
+                createApple();
             }
         }
     }
@@ -61,6 +64,7 @@ public class Snake extends JPanel implements ActionListener {
         snake = snakeImage;
         ap.loadImagesApple();
     }
+
 
     public void move() {
         for (int i = lengthSnake; i > 0; i--) {
@@ -85,6 +89,9 @@ public class Snake extends JPanel implements ActionListener {
         if (xSnake[0] == xApple && ySnake[0] == yApple) {
             lengthSnake++;
             createApple();
+            int x = timer.getDelay();
+            timer.setDelay(x - 5);
+
         }
     }
 
@@ -117,6 +124,7 @@ public class Snake extends JPanel implements ActionListener {
             move();
             eatApple();
             checkBorder();
+            createAppleInSnake();
         }
         repaint();
     }
