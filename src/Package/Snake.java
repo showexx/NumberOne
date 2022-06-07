@@ -15,7 +15,6 @@ public class Snake extends JPanel implements ActionListener {
     private int[] ySnake = new int[400];
     private int xApple;
     private int yApple;
-    private int delayTime = 250;
     private boolean inGame = true;
     private boolean moveLeft;
     private boolean moveRight = true;
