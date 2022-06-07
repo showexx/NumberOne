@@ -21,7 +21,6 @@ public class Snake extends JPanel implements ActionListener {
     private boolean moveRight = true;
     private boolean moveUp;
     private boolean moveDown;
-    private boolean eatApple;
     private Random random = new Random();
     private Timer timer;
     Apple ap = new Apple();
