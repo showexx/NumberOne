@@ -10,7 +10,6 @@ public class Apple extends JPanel {
         loadImagesApple();
     }
 
-
     public void loadImagesApple() {
         Image appleImage = new ImageIcon("src/appleCell.png").getImage();
         apple = appleImage;

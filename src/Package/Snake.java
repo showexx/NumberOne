@@ -32,23 +32,28 @@ public class Snake extends JPanel implements ActionListener {
         initializeGame();
         addKeyListener(new FieldKeyListener());
         setFocusable(true);
+
         timer = new Timer(250, this);
         timer.start();
     }
 
     public void initializeGame() {
+        createApple();
         for (int i = 0; i < lengthSnake; i++) {
             xSnake[i] = 48 - i * 16;
             ySnake[i] = 48;
         }
-        createApple();
     }
 
+    public void loadImages() {
+        Image snakeImage = new ImageIcon("src/snakeCell.png").getImage();
+        snake = snakeImage;
+        ap.loadImagesApple();
+    }
 
     public void createApple() {
         xApple = random.nextInt(20) * 16;
         yApple = random.nextInt(20) * 16;
-
     }
 
     public void createAppleInSnake(){
@@ -59,12 +64,25 @@ public class Snake extends JPanel implements ActionListener {
         }
     }
 
-    public void loadImages() {
-        Image snakeImage = new ImageIcon("src/snakeCell.png").getImage();
-        snake = snakeImage;
-        ap.loadImagesApple();
+    public void eatApple() {
+        if (xSnake[0] == xApple && ySnake[0] == yApple) {
+            createApple();
+            lengthSnake++;
+            int x = timer.getDelay();
+            timer.setDelay(x - 5);
+        }
     }
 
+    public void checkBorder() {
+        if (xSnake[0] > 400 || xSnake[0] < 0 || ySnake[0] > 400 || ySnake[0] < 0) {
+            inGame = false;
+        }
+        for (int i = 1; i < lengthSnake; i++) {
+            if (inGame && xSnake[0] == xSnake[i] && ySnake[0] == ySnake[i]) {
+                inGame = false;
+            }
+        }
+    }
 
     public void move() {
         for (int i = lengthSnake; i > 0; i--) {
@@ -85,28 +103,6 @@ public class Snake extends JPanel implements ActionListener {
         }
     }
 
-    public void eatApple() {
-        if (xSnake[0] == xApple && ySnake[0] == yApple) {
-            lengthSnake++;
-            createApple();
-            int x = timer.getDelay();
-            timer.setDelay(x - 5);
-
-        }
-    }
-
-
-    public void checkBorder() {
-        if (xSnake[0] > 400 || xSnake[0] < 0 || ySnake[0] > 400 || ySnake[0] < 0) {
-            inGame = false;
-        }
-        for (int i = 1; i < lengthSnake; i++) {
-            if (inGame && xSnake[0] == xSnake[i] && ySnake[0] == ySnake[i]) {
-                inGame = false;
-            }
-        }
-    }
-
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
@@ -122,8 +118,8 @@ public class Snake extends JPanel implements ActionListener {
     public void actionPerformed(ActionEvent e) {
         if (inGame) {
             move();
-            eatApple();
             checkBorder();
+            eatApple();
             createAppleInSnake();
         }
         repaint();
@@ -134,6 +130,7 @@ public class Snake extends JPanel implements ActionListener {
         public void keyPressed(KeyEvent e) {
             super.keyPressed(e);
             int key = e.getKeyCode();
+
             if (key == KeyEvent.VK_LEFT && !moveRight) {
                 moveLeft = true;
                 moveUp = false;
@@ -144,7 +141,6 @@ public class Snake extends JPanel implements ActionListener {
                 moveUp = false;
                 moveDown = false;
             }
-
             if (key == KeyEvent.VK_UP && !moveDown) {
                 moveRight = false;
                 moveUp = true;
