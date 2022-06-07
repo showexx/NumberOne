@@ -54,14 +54,6 @@ public class Snake extends JPanel implements ActionListener {
         yApple = random.nextInt(20) * 16;
     }
 
-    public void createAppleInSnake(){
-        for (int i = 1; i < lengthSnake; i++) {
-            if (xApple == xSnake[i] && yApple == ySnake[i]) {
-                createApple();
-            }
-        }
-    }
-
     public void eatApple() {
         if (xSnake[0] == xApple && ySnake[0] == yApple) {
             createApple();
@@ -118,7 +110,6 @@ public class Snake extends JPanel implements ActionListener {
             move();
             checkBorder();
             eatApple();
-            createAppleInSnake();
         }
         repaint();
     }
